@@ -1,4 +1,3 @@
-import axios from "axios";
 import {perAxios} from "@/service/global/perAxios";
 import {ResultModels} from "@/model/ResultModel";
 

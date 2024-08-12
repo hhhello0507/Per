@@ -9,6 +9,8 @@ import {ResultModels, ResultsMock} from "@/model/ResultModel";
 import {SearchType, searchTypes} from "@/type/SearchType";
 import searchService from "@/service/SearchService";
 import chatService from "@/service/ChatService";
+import Image from "next/image";
+import StarFill from "@Public/StarFill.svg";
 
 export default function Home() {
 
@@ -86,9 +88,16 @@ export default function Home() {
                         type="text"
                         placeholder={'Enter skill'}
                     />
-                    <button
-                        className={styles.button}
-                    />
+                    <button className={styles.button}>
+                        <StarFill
+                            style={{
+                                fill: 'white'
+                            }}
+                            width={36}
+                            height={36}
+                            fill={true}
+                        />
+                    </button>
                 </div>
                 <Spacer h={32}/>
 
