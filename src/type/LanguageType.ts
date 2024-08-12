@@ -36,4 +36,10 @@ const languageType: { [key: string]: string } = {
     lang_zh_TW: "Chinese (Traditional)"
 };
 
-export {languageType};
+function languageTypeKey(value: string): string | undefined {
+    for (const key of Object.keys(languageType)) {
+        if (languageType[key] === value) return key;
+    }
+}
+
+export {languageType, languageTypeKey};

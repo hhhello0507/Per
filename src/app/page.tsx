@@ -10,7 +10,7 @@ import searchService from "@/service/SearchService";
 import chatService from "@/service/ChatService";
 import StarFill from "@Public/StarFill.svg";
 import Globe from "@Public/Globe.svg";
-import {languageType} from "@/type/LanguageType";
+import {languageType, languageTypeKey} from "@/type/LanguageType";
 
 export default function Home() {
     const indicatorRef = useRef<HTMLUListElement>(null);
@@ -35,8 +35,12 @@ export default function Home() {
         if (!prompt) {
             return;
         }
+        const languageType = languageTypeKey(selectedLanguage);
+        if (!languageType) {
+            return;
+        }
         try {
-            const result = await searchService.search(prompt, selectedSearchType);
+            const result = await searchService.search(prompt, selectedSearchType, languageType);
             setGoogleResult(result);
         } catch (e) {
             console.log(e);
@@ -159,15 +163,15 @@ export default function Home() {
                     </button>
                 </div>
                 <Spacer h={32}/>
-                <div
-                    style={{
-                        fontSize: 16,
-                        marginBottom: 8,
-                        marginTop: 8,
-                        color: 'gray'
-                    }}
-                >Total &apos;100&apos; searched{selectedSearchType !== 'All' && ` in ${selectedSearchType}`}.
-                </div>
+                {/*<div TODO: Fix this */}
+                {/*    style={{*/}
+                {/*        fontSize: 16,*/}
+                {/*        marginBottom: 8,*/}
+                {/*        marginTop: 8,*/}
+                {/*        color: 'gray'*/}
+                {/*    }}*/}
+                {/*>Total &apos;100&apos; searched{selectedSearchType !== 'All' && ` in ${selectedSearchType}`}.*/}
+                {/*</div>*/}
                 <ul
                     ref={indicatorRef}
                     style={{
