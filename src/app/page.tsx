@@ -18,7 +18,7 @@ export default function Home() {
     const prompt = inputRef.current?.value;
     const [content, setContent] = useState<string[]>([]);
     const [googleResult, setGoogleResult] = useState<ResultModels>([]);
-    const [selectedSearchType, setSelectedSearchType] = useState<SearchType>('All');
+    const [selectedSearchType, setSelectedSearchType] = useState<SearchType | undefined>(undefined);
     const [selectedLanguage, setSelectedLanguage] = useState<string>(languageType['lang_en']);
     const [selectingLanguage, setSelectingLanguage] = useState(false);
 
@@ -32,11 +32,8 @@ export default function Home() {
     }, [selectedSearchType]);
 
     async function search() {
-        if (!prompt) {
-            return;
-        }
         const languageType = languageTypeKey(selectedLanguage);
-        if (!languageType) {
+        if (!languageType || !prompt || !selectedSearchType) {
             return;
         }
         try {
@@ -69,6 +66,11 @@ export default function Home() {
                 return originContent.split('\n');
             });
         }
+    }
+
+    function clearSearchResult() {
+        setSelectedSearchType(undefined);
+        setGoogleResult([]);
     }
 
     return (
@@ -144,6 +146,9 @@ export default function Home() {
                         }}>{selectedLanguage}</span>
                     </div>
                     <input
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            clearSearchResult();
+                        }}
                         ref={inputRef}
                         style={{
                             width: 300
@@ -152,7 +157,12 @@ export default function Home() {
                         type="text"
                         placeholder={'Enter skill'}
                     />
-                    <button className={styles.button}>
+                    <button
+                        className={styles.button}
+                        onClick={() => {
+                            alert('Coming soon');
+                        }}
+                    >
                         <StarFill
                             style={{
                                 fill: 'white'
