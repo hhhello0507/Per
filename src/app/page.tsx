@@ -6,17 +6,9 @@ import axios from "axios";
 import GoogleResult from "@/app/component/GoogleResult";
 import Spacer from "@/app/component/Spacer";
 import {ResultModels, ResultsMock} from "@/model/ResultModel";
-
-type SearchType = 'All' | 'Github' | 'Youtube' | 'Medium' | 'Tistory' | 'Velog';
-
-const searchTypes: SearchType[] = [
-    'All',
-    'Github',
-    'Youtube',
-    'Medium',
-    'Tistory',
-    "Velog"
-]
+import {SearchType, searchTypes} from "@/type/SearchType";
+import searchService from "@/service/SearchService";
+import chatService from "@/service/ChatService";
 
 export default function Home() {
 
@@ -25,27 +17,28 @@ export default function Home() {
     const [googleResult, setGoogleResult] = useState<ResultModels>(ResultsMock);
     const [selectedSearchType, setSelectedSearchType] = useState<SearchType>('All');
 
-    async function searchGoogle() {
-        const value = inputRef.current?.value;
-        if (!value) {
-            alert('input piz');
+    async function search() {
+        const prompt = inputRef.current?.value;
+        if (!prompt) {
+            alert('Please enter prompt');
             return;
         }
-        axios.get(`http://localhost:3000/api/google?q=${value}`)
-            .then(res => {
-                console.log(res.data);
-                setGoogleResult(res.data);
-            });
+        try {
+            const result = await searchService.search(prompt)
+            setGoogleResult(result);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     async function generate() {
-        const value = inputRef.current?.value;
-        if (!value) {
-            alert('input piz');
+        const prompt = inputRef.current?.value;
+        if (!prompt) {
+            alert('Please enter prompt');
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/api/chat?q=${value}`);
+        const response = await chatService.chat(prompt);
         const reader = response.body?.getReader()!;
         const decoder = new TextDecoder();
         let s = '';
