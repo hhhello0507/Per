@@ -1,4 +1,4 @@
-import ResultModel from "@/model/Result";
+import ResultModel from "@/model/ResultModel";
 
 interface SearchModel {
     kind: string;

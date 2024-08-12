@@ -1,7 +1,7 @@
 "use client"
 
 import styles from "./GoogleResult.module.css";
-import ResultModel from "@/model/Result";
+import ResultModel from "@/model/ResultModel";
 
 export default function GoogleResult(
     {

@@ -5,7 +5,7 @@ import {useRef, useState} from "react";
 import axios from "axios";
 import GoogleResult from "@/app/component/GoogleResult";
 import Spacer from "@/app/component/Spacer";
-import {ResultModels, ResultsMock} from "@/model/Result";
+import {ResultModels, ResultsMock} from "@/model/ResultModel";
 
 type SearchType = 'All' | 'Github' | 'Youtube' | 'Medium' | 'Tistory' | 'Velog';
 
