@@ -1,67 +1,118 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
 }
 
 .container {
-  /*layout*/
-  padding: 6rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    /*layout*/
+    padding: 6rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .title {
-  font-size: 44px;
-  font-weight: 700
+    font-size: 44px;
+    font-weight: 700
 }
 
 .subtitle {
-  font-size: 18px;
-  font-weight: 300;
-  color: gray;
+    font-size: 18px;
+    font-weight: 300;
+    color: gray;
 }
 
 .primary {
-  padding: 8px 12px;
-  border-radius: 8px;
-  outline: none;
-  border: 2px solid #333;
-  background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    outline: none;
+    border: 2px solid #333;
+    background: white;
 }
 
 .input {
-  padding: 0 20px;
-  outline: none;
-  height: 64px;
-  border-radius: 100px;
-  background: #f4f5f9;
-  border: 1px solid #ddd;
-  color: black;
-  font-size: 18px;
+    padding: 0 20px;
+    outline: none;
+    height: 64px;
+    border-radius: 100px;
+    background: #f4f5f9;
+    border: 1px solid #ddd;
+    color: black;
+    font-size: 18px;
 }
 
 .button {
-  width: 64px;
-  height: 64px;
-  border-radius: 100px;
-  outline: none;
-  border: none;
-  background: var(--primary);
-  cursor: pointer;
+    display: flex;
+    width: 64px;
+    height: 64px;
+    border-radius: 100px;
+    outline: none;
+    border: none;
+    background: var(--primary);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
 
-  &:hover {
-    opacity: 0.8;
-  }
+    &:hover {
+        opacity: 0.8;
+    }
 }
 
 .tabBarItem {
-  font-size: 18px;
-  padding: 12px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: 0.2s background;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s background;
+}
+
+.globeButton {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 12px;
+    cursor: pointer;
+    background: white;
+    outline: none;
+    border: none;
+
+    &:hover {
+        background: #f4f5f9;
+    }
+
+    transition: 0.2s background;
+}
+
+.dropdownContent {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.05);
+    z-index: 1;
+    margin-top: 44px;
+    border-radius: 8px;
+    top: 0;
+    height: 200px;
+    overflow-y: scroll;
+    padding: 8px;
+}
+
+.dropdownItemButton {
+    &:hover {
+        background: #f4f5f9;
+    }
+
+    outline: none;
+    border: none;
+    background: white;
+    padding: 6px 12px;
+    transition: 0.2s background;
+    border-radius: 8px;
 }

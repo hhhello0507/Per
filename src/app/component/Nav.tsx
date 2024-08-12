@@ -20,6 +20,7 @@ export default function Nav() {
                     borderRadius: 8,
                     cursor: 'pointer'
                 }}
+                alt={'logo'}
             />
             <div
                 style={{

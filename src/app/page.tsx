@@ -1,51 +1,56 @@
 "use client"
 
 import styles from "./page.module.css";
-import {useRef, useState} from "react";
-import axios from "axios";
-import GoogleResult from "@/app/component/GoogleResult";
+import React, {useEffect, useRef, useState} from "react";
+import GoogleResultCell from "@/app/component/GoogleResultCell";
 import Spacer from "@/app/component/Spacer";
-import {ResultModels, ResultsMock} from "@/model/Result";
-
-type SearchType = 'All' | 'Github' | 'Youtube' | 'Medium' | 'Tistory' | 'Velog';
-
-const searchTypes: SearchType[] = [
-    'All',
-    'Github',
-    'Youtube',
-    'Medium',
-    'Tistory',
-    "Velog"
-]
+import {ResultModels} from "@/model/ResultModel";
+import {SearchType, searchTypes} from "@/type/SearchType";
+import searchService from "@/service/SearchService";
+import chatService from "@/service/ChatService";
+import StarFill from "@Public/StarFill.svg";
+import Globe from "@Public/Globe.svg";
+import {languageType} from "@/type/LanguageType";
 
 export default function Home() {
-
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const indicatorRef = useRef<HTMLUListElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const prompt = inputRef.current?.value;
     const [content, setContent] = useState<string[]>([]);
-    const [googleResult, setGoogleResult] = useState<ResultModels>(ResultsMock);
+    const [googleResult, setGoogleResult] = useState<ResultModels>([]);
     const [selectedSearchType, setSelectedSearchType] = useState<SearchType>('All');
+    const [selectedLanguage, setSelectedLanguage] = useState<string>(languageType['lang_en']);
+    const [selectingLanguage, setSelectingLanguage] = useState(false);
 
-    async function searchGoogle() {
-        const value = inputRef.current?.value;
-        if (!value) {
-            alert('input piz');
+    useEffect(() => {
+        if (!prompt) {
             return;
         }
-        axios.get(`http://localhost:3000/api/google?q=${value}`)
-            .then(res => {
-                console.log(res.data);
-                setGoogleResult(res.data);
-            });
+        if (selectedSearchType) {
+            search();
+        }
+    }, [selectedSearchType]);
+
+    async function search() {
+        if (!prompt) {
+            return;
+        }
+        try {
+            const result = await searchService.search(prompt, selectedSearchType);
+            setGoogleResult(result);
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     async function generate() {
-        const value = inputRef.current?.value;
-        if (!value) {
-            alert('input piz');
+        const prompt = inputRef.current?.value;
+        if (!prompt) {
+            alert('Please enter prompt');
             return;
         }
 
-        const response = await fetch(`http://localhost:3000/api/chat?q=${value}`);
+        const response = await chatService.chat(prompt);
         const reader = response.body?.getReader()!;
         const decoder = new TextDecoder();
         let s = '';
@@ -63,7 +68,12 @@ export default function Home() {
     }
 
     return (
-        <main className={styles.main}>
+        <div
+            className={styles.main}
+            onClick={() => {
+                setSelectingLanguage(false);
+            }}
+        >
             <div className={styles.container}>
                 <div style={{
                     display: 'flex',
@@ -84,6 +94,51 @@ export default function Home() {
                         gap: 12,
                     }}
                 >
+                    <div
+                        style={{
+                            display: 'flex',
+                            position: 'relative',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <div className={styles.globeButton}>
+                            <Globe
+                                style={{
+                                    color: '#a2a2a6',
+                                    width: 36,
+                                    height: 36
+                                }}
+                                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                                    e.stopPropagation();
+                                    setSelectingLanguage(true);
+                                }}
+                            />
+                            {selectingLanguage && (
+                                <div className={styles.dropdownContent}>
+                                    {Object.entries(languageType).map((item, i) => (
+                                        <button
+                                            key={i}
+                                            className={styles.dropdownItemButton}
+                                            onClick={() => {
+                                                setSelectedLanguage(item[1]);
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    fontSize: 16
+                                                }}
+                                            >{item[1]}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <span style={{
+                            fontSize: 14,
+                            color: 'gray'
+                        }}>{selectedLanguage}</span>
+                    </div>
                     <input
                         ref={inputRef}
                         style={{
@@ -93,12 +148,17 @@ export default function Home() {
                         type="text"
                         placeholder={'Enter skill'}
                     />
-                    <button
-                        className={styles.button}
-                    />
+                    <button className={styles.button}>
+                        <StarFill
+                            style={{
+                                fill: 'white'
+                            }}
+                            width={36}
+                            height={36}
+                        />
+                    </button>
                 </div>
                 <Spacer h={32}/>
-
                 <div
                     style={{
                         fontSize: 16,
@@ -108,14 +168,19 @@ export default function Home() {
                     }}
                 >Total &apos;100&apos; searched{selectedSearchType !== 'All' && ` in ${selectedSearchType}`}.
                 </div>
-                <ul style={{
-                    display: 'flex',
-                    listStyle: 'none',
-                    gap: 4,
-                    background: '#f4f5f9',
-                    padding: 6,
-                    borderRadius: 16,
-                }}>
+                <ul
+                    ref={indicatorRef}
+                    style={{
+                        position: 'sticky',
+                        top: 16,
+                        display: 'flex',
+                        listStyle: 'none',
+                        gap: 4,
+                        background: '#f4f5f9',
+                        padding: 6,
+                        borderRadius: 16
+                    }}
+                >
                     {searchTypes.map((type, idx) => (
                         <li
                             key={idx}
@@ -143,7 +208,7 @@ export default function Home() {
                     }}
                 >
                     {googleResult.map((result, idx) =>
-                        <GoogleResult key={idx} result={result}/>
+                        <GoogleResultCell key={idx} result={result}/>
                     )}
                 </ul>
             </div>
@@ -158,8 +223,13 @@ export default function Home() {
                     color: 'gray'
                 }}
             >
-                Hello
+                Connect&nbsp;-&nbsp;<a
+                style={{
+                    color: 'var(--primary)'
+                }}
+                href="mailto:hhhello0507@gmail.com">hhhello0507@gmail.com
+            </a>
             </div>
-        </main>
+        </div>
     );
 }

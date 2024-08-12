@@ -1,9 +1,9 @@
 "use client"
 
 import styles from "./GoogleResult.module.css";
-import ResultModel from "@/model/Result";
+import ResultModel from "@/model/ResultModel";
 
-export default function GoogleResult(
+export default function GoogleResultCell(
     {
         result
     }: {
@@ -22,7 +22,8 @@ export default function GoogleResult(
                         display: 'flex',
                         flexDirection: 'column',
                         maxWidth: 600,
-                        alignItems: 'flex-start'
+                        alignItems: 'flex-start',
+                        flex: 1
                     }}
                 >
                     {/*info*/}
@@ -53,7 +54,7 @@ export default function GoogleResult(
                             textOverflow: 'ellipsis',
                             fontSize: 16,
                             fontWeight: 400,
-                            overflow: 'hidden'
+                            overflow: 'hidden',
                         }}
                     >
                         {result.title}
@@ -69,7 +70,7 @@ export default function GoogleResult(
                         {result.snippet}
                     </div>
                 </div>
-                {result.pagemap?.cse_thumbnail.length > 0 && (
+                {result.pagemap?.cse_thumbnail?.length > 0 && (
                     (() => {
                         const thumbNail = result.pagemap.cse_thumbnail[0];
                         return (
@@ -78,6 +79,7 @@ export default function GoogleResult(
                                 style={{
                                     display: 'flex',
                                     borderRadius: 8,
+                                    border: '1.5px solid #f4f5f9',
                                 }}
                                 width={thumbNail.width}
                                 height={thumbNail.height}

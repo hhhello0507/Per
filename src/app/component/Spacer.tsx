@@ -6,8 +6,8 @@ export default function Spacer(
         h,
         style
     }: {
-        w?: number,
-        h?: number,
+        w?: number, // Unit: px
+        h?: number, // Unit: px
         style?: React.CSSProperties
     }
 ) {
