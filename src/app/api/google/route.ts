@@ -1,6 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import config from "@/config/config";
 import axios from "axios";
+import ResultModel from "@/model/Result";
 
 export async function GET(
     req: NextRequest
