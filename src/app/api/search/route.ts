@@ -13,10 +13,20 @@ export async function GET(
         const q = searchParams.get('q') as string;
         const type = searchParams.get('type') as SearchType;
         const searchEngineId = searchEngineIds[type];
-        const response = await axios.get(`https://customsearch.googleapis.com/customsearch/v1?cx=${searchEngineId}&q=${q}&key=${apiKey}`);
+        const response = await axios.get(`https://customsearch.googleapis.com/customsearch/v1`, {
+            params: {
+                cx: searchEngineId,
+                q,
+                key: apiKey,
+                lr: 'lang_ko',
+                // hl: 'ko',
+                // cr: 'ko',
+                // start: 11
+            }
+        });
         return NextResponse.json(response.data.items as Array<ResultModel>);
     } catch (e) {
         console.log(e);
-        return NextResponse.json({ message: 'server error' }, { status: 500 })
+        return NextResponse.json({message: 'server error'}, {status: 500})
     }
 }

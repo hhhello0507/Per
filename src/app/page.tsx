@@ -1,7 +1,7 @@
 "use client"
 
 import styles from "./page.module.css";
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import GoogleResultCell from "@/app/component/GoogleResultCell";
 import Spacer from "@/app/component/Spacer";
 import {ResultModels} from "@/model/ResultModel";
@@ -9,6 +9,8 @@ import {SearchType, searchTypes} from "@/type/SearchType";
 import searchService from "@/service/SearchService";
 import chatService from "@/service/ChatService";
 import StarFill from "@Public/StarFill.svg";
+import Globe from "@Public/Globe.svg";
+import {languageType} from "@/type/LanguageType";
 
 export default function Home() {
     const indicatorRef = useRef<HTMLUListElement>(null);
@@ -17,6 +19,8 @@ export default function Home() {
     const [content, setContent] = useState<string[]>([]);
     const [googleResult, setGoogleResult] = useState<ResultModels>([]);
     const [selectedSearchType, setSelectedSearchType] = useState<SearchType>('All');
+    const [selectedLanguage, setSelectedLanguage] = useState<string>(languageType['lang_en']);
+    const [selectingLanguage, setSelectingLanguage] = useState(false);
 
     useEffect(() => {
         if (!prompt) {
@@ -64,7 +68,12 @@ export default function Home() {
     }
 
     return (
-        <main className={styles.main}>
+        <div
+            className={styles.main}
+            onClick={() => {
+                setSelectingLanguage(false);
+            }}
+        >
             <div className={styles.container}>
                 <div style={{
                     display: 'flex',
@@ -85,6 +94,51 @@ export default function Home() {
                         gap: 12,
                     }}
                 >
+                    <div
+                        style={{
+                            display: 'flex',
+                            position: 'relative',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <div className={styles.globeButton}>
+                            <Globe
+                                style={{
+                                    color: '#a2a2a6',
+                                    width: 36,
+                                    height: 36
+                                }}
+                                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                                    e.stopPropagation();
+                                    setSelectingLanguage(true);
+                                }}
+                            />
+                            {selectingLanguage && (
+                                <div className={styles.dropdownContent}>
+                                    {Object.entries(languageType).map((item, i) => (
+                                        <button
+                                            key={i}
+                                            className={styles.dropdownItemButton}
+                                            onClick={() => {
+                                                setSelectedLanguage(item[1]);
+                                            }}
+                                        >
+                                            <span
+                                                style={{
+                                                    fontSize: 16
+                                                }}
+                                            >{item[1]}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        <span style={{
+                            fontSize: 14,
+                            color: 'gray'
+                        }}>{selectedLanguage}</span>
+                    </div>
                     <input
                         ref={inputRef}
                         style={{
@@ -101,7 +155,6 @@ export default function Home() {
                             }}
                             width={36}
                             height={36}
-                            fill={true}
                         />
                     </button>
                 </div>
@@ -170,8 +223,13 @@ export default function Home() {
                     color: 'gray'
                 }}
             >
-                Hello
+                Connect&nbsp;-&nbsp;<a
+                style={{
+                    color: 'var(--primary)'
+                }}
+                href="mailto:hhhello0507@gmail.com">hhhello0507@gmail.com
+            </a>
             </div>
-        </main>
+        </div>
     );
 }

@@ -69,3 +69,50 @@
     cursor: pointer;
     transition: 0.2s background;
 }
+
+.globeButton {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 12px;
+    cursor: pointer;
+    background: white;
+    outline: none;
+    border: none;
+
+    &:hover {
+        background: #f4f5f9;
+    }
+
+    transition: 0.2s background;
+}
+
+.dropdownContent {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    background: white;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.05);
+    z-index: 1;
+    margin-top: 44px;
+    border-radius: 8px;
+    top: 0;
+    height: 200px;
+    overflow-y: scroll;
+    padding: 8px;
+}
+
+.dropdownItemButton {
+    &:hover {
+        background: #f4f5f9;
+    }
+
+    outline: none;
+    border: none;
+    background: white;
+    padding: 6px 12px;
+    transition: 0.2s background;
+    border-radius: 8px;
+}
