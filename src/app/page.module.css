@@ -1,0 +1,67 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  /*layout*/
+  padding: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 44px;
+  font-weight: 700
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 300;
+  color: gray;
+}
+
+.primary {
+  padding: 8px 12px;
+  border-radius: 8px;
+  outline: none;
+  border: 2px solid #333;
+  background: white;
+}
+
+.input {
+  padding: 0 20px;
+  outline: none;
+  height: 64px;
+  border-radius: 100px;
+  background: #f4f5f9;
+  border: 1px solid #ddd;
+  color: black;
+  font-size: 18px;
+}
+
+.button {
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  outline: none;
+  border: none;
+  background: var(--primary);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.tabBarItem {
+  font-size: 18px;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s background;
+}

@@ -1,0 +1,10 @@
+.container {
+    &:hover {
+        background: #f6f6f6;
+    }
+    background: white;
+    transition: 0.15s background;
+    display: flex;
+    border-radius: 16px;
+    padding: 16px;
+}
