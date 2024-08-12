@@ -1,32 +1,38 @@
 "use client"
 
 import styles from "./page.module.css";
-import {useRef, useState} from "react";
-import axios from "axios";
-import GoogleResult from "@/app/component/GoogleResult";
+import {useEffect, useRef, useState} from "react";
+import GoogleResultCell from "@/app/component/GoogleResultCell";
 import Spacer from "@/app/component/Spacer";
-import {ResultModels, ResultsMock} from "@/model/ResultModel";
+import {ResultModels} from "@/model/ResultModel";
 import {SearchType, searchTypes} from "@/type/SearchType";
 import searchService from "@/service/SearchService";
 import chatService from "@/service/ChatService";
-import Image from "next/image";
 import StarFill from "@Public/StarFill.svg";
 
 export default function Home() {
-
-    const inputRef = useRef<HTMLInputElement | null>(null);
+    const indicatorRef = useRef<HTMLUListElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const prompt = inputRef.current?.value;
     const [content, setContent] = useState<string[]>([]);
-    const [googleResult, setGoogleResult] = useState<ResultModels>(ResultsMock);
+    const [googleResult, setGoogleResult] = useState<ResultModels>([]);
     const [selectedSearchType, setSelectedSearchType] = useState<SearchType>('All');
 
-    async function search() {
-        const prompt = inputRef.current?.value;
+    useEffect(() => {
         if (!prompt) {
-            alert('Please enter prompt');
+            return;
+        }
+        if (selectedSearchType) {
+            search();
+        }
+    }, [selectedSearchType]);
+
+    async function search() {
+        if (!prompt) {
             return;
         }
         try {
-            const result = await searchService.search(prompt)
+            const result = await searchService.search(prompt, selectedSearchType);
             setGoogleResult(result);
         } catch (e) {
             console.log(e);
@@ -100,7 +106,6 @@ export default function Home() {
                     </button>
                 </div>
                 <Spacer h={32}/>
-
                 <div
                     style={{
                         fontSize: 16,
@@ -110,14 +115,19 @@ export default function Home() {
                     }}
                 >Total &apos;100&apos; searched{selectedSearchType !== 'All' && ` in ${selectedSearchType}`}.
                 </div>
-                <ul style={{
-                    display: 'flex',
-                    listStyle: 'none',
-                    gap: 4,
-                    background: '#f4f5f9',
-                    padding: 6,
-                    borderRadius: 16,
-                }}>
+                <ul
+                    ref={indicatorRef}
+                    style={{
+                        position: 'sticky',
+                        top: 16,
+                        display: 'flex',
+                        listStyle: 'none',
+                        gap: 4,
+                        background: '#f4f5f9',
+                        padding: 6,
+                        borderRadius: 16
+                    }}
+                >
                     {searchTypes.map((type, idx) => (
                         <li
                             key={idx}
@@ -145,7 +155,7 @@ export default function Home() {
                     }}
                 >
                     {googleResult.map((result, idx) =>
-                        <GoogleResult key={idx} result={result}/>
+                        <GoogleResultCell key={idx} result={result}/>
                     )}
                 </ul>
             </div>

@@ -1,9 +1,15 @@
 import {perAxios} from "@/service/global/perAxios";
 import {ResultModels} from "@/model/ResultModel";
+import {SearchType} from "@/type/SearchType";
 
 class SearchService {
-    async search(prompt: string): Promise<ResultModels> {
-        const {data} = await perAxios.get(`google?q=${prompt}`);
+    async search(prompt: string, type: SearchType): Promise<ResultModels> {
+        const {data} = await perAxios.get(`search`, {
+            params: {
+                q: prompt,
+                type
+            }
+        });
         return data;
     }
 }

@@ -3,12 +3,13 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
 }
 
 .container {
     /*layout*/
     padding: 6rem;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
