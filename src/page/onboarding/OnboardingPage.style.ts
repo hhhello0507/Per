@@ -11,7 +11,7 @@ const style = {
     `,
     Container: styled.div`
         display: flex;
-        padding: 72px 16px 32px 16px;
+        padding: 108px 16px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -24,14 +24,6 @@ const style = {
         align-items: flex-start;
         gap: 4px;
         align-self: stretch;
-    `,
-    Title: styled.div`
-        align-self: stretch;
-
-        color: #000;
-        text-align: center;
-
-        ${Fonts[Font.Display1B]};
     `,
     Description: styled.div`
         align-self: stretch;

@@ -13,6 +13,10 @@ export const GlobalStyle = createGlobalStyle`
         cursor: pointer;
     }
 
+    input {
+        border: none;
+        outline: none;
+    }
     :root {
         --Neutral-50: #A4A4B0;
         --P50: #FF8529;

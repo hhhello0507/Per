@@ -1,4 +1,6 @@
 import S from './OnboardingPage.style';
+import C from '../../component/Title.style';
+import {useNavigate} from "react-router-dom";
 
 const siteData: { image: any, name: string }[] = [
     {
@@ -24,11 +26,12 @@ const siteData: { image: any, name: string }[] = [
 ]
 
 export default function OnboardingPage() {
+    const navigate = useNavigate();
     return (
         <S.Root>
             <S.Container>
                 <S.Headline>
-                    <S.Title>Elegant AI skill search engine</S.Title>
+                    <C.Title>Elegant AI skill search engine</C.Title>
                     <S.Description>Enter skill easy you want to learn!</S.Description>
                 </S.Headline>
                 <S.SkillContainer>
@@ -42,7 +45,7 @@ export default function OnboardingPage() {
                 </S.SkillContainer>
             </S.Container>
             <S.Container>
-                <S.Title>One click, get it all</S.Title>
+                <C.Title>One click, get it all</C.Title>
                 <S.SiteContainer>
                     {siteData.map(site => (
                         <S.SiteCell>
@@ -54,7 +57,7 @@ export default function OnboardingPage() {
             </S.Container>
             <S.Container>
                 <S.Headline>
-                    <S.Title>Stop doing boring searches</S.Title>
+                    <C.Title>Stop doing boring searches</C.Title>
                     <S.Description>AI generates related content super fast</S.Description>
                 </S.Headline>
                 <S.TreeContainer>
@@ -91,8 +94,10 @@ export default function OnboardingPage() {
                 </S.TreeContainer>
             </S.Container>
             <S.Container>
-                <S.Title>Let's Go!</S.Title>
-                <S.StartButton>Start</S.StartButton>
+                <C.Title>Let's Go!</C.Title>
+                <S.StartButton onClick={() => {
+                    navigate("/");
+                }}>Start</S.StartButton>
             </S.Container>
         </S.Root>
     );
