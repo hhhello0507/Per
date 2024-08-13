@@ -43,6 +43,7 @@ export default function Home() {
             console.log(e);
         }
     }
+
     function clearSearchResult() {
         setSelectedSearchType(undefined);
         setGoogleResult([]);
