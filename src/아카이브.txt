@@ -1,0 +1,26 @@
+import chatService from "@/service/ChatService";
+
+
+async function generate() {
+    const prompt = inputRef.current?.value;
+    if (!prompt) {
+        alert('Please enter prompt');
+        return;
+    }
+
+    const response = await chatService.chat(prompt);
+    const reader = response.body?.getReader()!;
+    const decoder = new TextDecoder();
+    let s = '';
+    while (true) {
+        let {done, value} = await reader.read();
+        if (done) break;
+        const newContent = decoder.decode(value, {stream: true});
+        s += newContent;
+        setContent(content => {
+            let originContent: string = content.reduce((a, b) => a + '\n' + b, '');
+            originContent += newContent
+            return originContent.split('\n');
+        });
+    }
+}

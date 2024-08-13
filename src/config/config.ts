@@ -9,7 +9,7 @@ const Config = {
         all: process.env.ALL_SEARCH_ENGINE_ID,
         github: process.env.GITHUB_SEARCH_ENGINE_ID,
         youtube: process.env.YOUTUBE_SEARCH_ENGINE_ID,
-    }
-}
+    },
+};
 
 export default Config;

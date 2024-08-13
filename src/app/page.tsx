@@ -1,24 +1,24 @@
-"use client"
+'use client';
 
-import styles from "./page.module.css";
+import shared from '@/app/shared.module.css';
+import styles from "@/app/onboarding/page.module.css";
+import Globe from "@Public/Globe.svg";
 import React, {useEffect, useRef, useState} from "react";
-import GoogleResultCell from "@/app/component/GoogleResultCell";
-import Spacer from "@/app/component/Spacer";
+import {languageType, languageTypeKey} from "@/type/LanguageType";
+import searchService from "@/service/SearchService";
 import {ResultModels} from "@/model/ResultModel";
 import {SearchType, searchTypes} from "@/type/SearchType";
-import searchService from "@/service/SearchService";
-import chatService from "@/service/ChatService";
-import StarFill from "@Public/StarFill.svg";
-import Globe from "@Public/Globe.svg";
-import {languageType, languageTypeKey} from "@/type/LanguageType";
+import Spacer from "@/app/component/Spacer";
+import GoogleResultCell from "@/app/component/GoogleResultCell";
 
 export default function Home() {
+
     const indicatorRef = useRef<HTMLUListElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const prompt = inputRef.current?.value;
+    const prompt = 'temp';
     const [content, setContent] = useState<string[]>([]);
     const [googleResult, setGoogleResult] = useState<ResultModels>([]);
     const [selectedSearchType, setSelectedSearchType] = useState<SearchType | undefined>(undefined);
+
     const [selectedLanguage, setSelectedLanguage] = useState<string>(languageType['lang_en']);
     const [selectingLanguage, setSelectingLanguage] = useState(false);
 
@@ -43,145 +43,64 @@ export default function Home() {
             console.log(e);
         }
     }
-
-    async function generate() {
-        const prompt = inputRef.current?.value;
-        if (!prompt) {
-            alert('Please enter prompt');
-            return;
-        }
-
-        const response = await chatService.chat(prompt);
-        const reader = response.body?.getReader()!;
-        const decoder = new TextDecoder();
-        let s = '';
-        while (true) {
-            let {done, value} = await reader.read();
-            if (done) break;
-            const newContent = decoder.decode(value, {stream: true});
-            s += newContent;
-            setContent(content => {
-                let originContent: string = content.reduce((a, b) => a + '\n' + b, '');
-                originContent += newContent
-                return originContent.split('\n');
-            });
-        }
-    }
-
     function clearSearchResult() {
         setSelectedSearchType(undefined);
         setGoogleResult([]);
     }
 
+
     return (
-        <div
-            className={styles.main}
+        <main
+            className={shared.main}
             onClick={() => {
                 setSelectingLanguage(false);
             }}
         >
-            <div className={styles.container}>
-                <div style={{
+            <div
+                style={{
                     display: 'flex',
+                    position: 'relative',
                     flexDirection: 'column',
-                    gap: 12,
-                    alignItems: 'center',
-                    marginTop: 32
-                }}>
-                    <div className={styles.title}>Elegant skill search engine</div>
-                    <div className={styles.subtitle}>Enter skill you want to learn! ex. TypeScript, Rust, Unity Engine
-                    </div>
-                </div>
-                <Spacer h={30}/>
-                <div
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 12,
-                    }}
-                >
-                    <div
+                    alignItems: 'center'
+                }}
+            >
+                <div className={styles.globeButton}>
+                    <Globe
                         style={{
-                            display: 'flex',
-                            position: 'relative',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+                            color: '#a2a2a6',
+                            width: 36,
+                            height: 36
                         }}
-                    >
-                        <div className={styles.globeButton}>
-                            <Globe
-                                style={{
-                                    color: '#a2a2a6',
-                                    width: 36,
-                                    height: 36
-                                }}
-                                onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
-                                    e.stopPropagation();
-                                    setSelectingLanguage(true);
-                                }}
-                            />
-                            {selectingLanguage && (
-                                <div className={styles.dropdownContent}>
-                                    {Object.entries(languageType).map((item, i) => (
-                                        <button
-                                            key={i}
-                                            className={styles.dropdownItemButton}
-                                            onClick={() => {
-                                                setSelectedLanguage(item[1]);
-                                            }}
-                                        >
+                        onClick={(e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                            e.stopPropagation();
+                            setSelectingLanguage(true);
+                        }}
+                    />
+                    {selectingLanguage && (
+                        <div className={styles.dropdownContent}>
+                            {Object.entries(languageType).map((item, i) => (
+                                <button
+                                    key={i}
+                                    className={styles.dropdownItemButton}
+                                    onClick={() => {
+                                        setSelectedLanguage(item[1]);
+                                    }}
+                                >
                                             <span
                                                 style={{
                                                     fontSize: 16
                                                 }}
                                             >{item[1]}</span>
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
+                                </button>
+                            ))}
                         </div>
-                        <span style={{
-                            fontSize: 14,
-                            color: 'gray'
-                        }}>{selectedLanguage}</span>
-                    </div>
-                    <input
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            clearSearchResult();
-                        }}
-                        ref={inputRef}
-                        style={{
-                            width: 300
-                        }}
-                        className={styles.input}
-                        type="text"
-                        placeholder={'Enter skill'}
-                    />
-                    <button
-                        className={styles.button}
-                        onClick={() => {
-                            alert('Coming soon');
-                        }}
-                    >
-                        <StarFill
-                            style={{
-                                fill: 'white'
-                            }}
-                            width={36}
-                            height={36}
-                        />
-                    </button>
+                    )}
                 </div>
-                <Spacer h={32}/>
-                {/*<div TODO: Fix this */}
-                {/*    style={{*/}
-                {/*        fontSize: 16,*/}
-                {/*        marginBottom: 8,*/}
-                {/*        marginTop: 8,*/}
-                {/*        color: 'gray'*/}
-                {/*    }}*/}
-                {/*>Total &apos;100&apos; searched{selectedSearchType !== 'All' && ` in ${selectedSearchType}`}.*/}
-                {/*</div>*/}
+                <span style={{
+                    fontSize: 14,
+                    color: 'gray'
+                }}>{selectedLanguage}</span>
+
                 <ul
                     ref={indicatorRef}
                     style={{
@@ -226,24 +145,6 @@ export default function Home() {
                     )}
                 </ul>
             </div>
-            {/*footer*/}
-            <div
-                style={{
-                    display: 'flex',
-                    background: 'white',
-                    alignSelf: 'stretch',
-                    padding: '32px 4rem',
-                    borderTop: '1px solid #eee',
-                    color: 'gray'
-                }}
-            >
-                Connect&nbsp;-&nbsp;<a
-                style={{
-                    color: 'var(--primary)'
-                }}
-                href="mailto:hhhello0507@gmail.com">hhhello0507@gmail.com
-            </a>
-            </div>
-        </div>
-    );
+        </main>
+    )
 }

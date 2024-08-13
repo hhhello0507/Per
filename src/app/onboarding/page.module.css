@@ -1,26 +1,26 @@
-.main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: 100vh;
-}
 
 .container {
     /*layout*/
-    padding: 6rem;
-    position: relative;
     display: flex;
+    padding: 96px 20px 0 20px;
+    /*position: relative;*/
     flex-direction: column;
     align-items: center;
+    width: 100vw;
+    min-height: 100vh;
 }
 
 .title {
+    display: flex;
     font-size: 44px;
-    font-weight: 700
+    font-weight: 700;
+    @media screen and (max-width: 767px) {
+        font-size: 36px;
+    }
 }
 
 .subtitle {
+    display: flex;
     font-size: 18px;
     font-weight: 300;
     color: gray;

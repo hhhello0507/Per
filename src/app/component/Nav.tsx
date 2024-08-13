@@ -1,4 +1,8 @@
+'use client'
+
 import React from "react";
+import GoogleLoginButton from "@/app/component/GoogleLoginButton";
+import Spacer from "@/app/component/Spacer";
 
 export default function Nav() {
     return (
@@ -6,10 +10,16 @@ export default function Nav() {
             style={{
                 display: 'flex',
                 position: 'fixed',
-                top: 32,
-                left: 32,
                 gap: 12,
-                alignItems: 'center'
+                alignItems: 'center',
+                background: 'white',
+                width: '100vw',
+                paddingLeft: 32,
+                paddingRight: 32,
+                paddingTop: 16,
+                paddingBottom: 16,
+                border: '1px solid #eee',
+                zIndex: 1000,
             }}
         >
             <img
@@ -29,6 +39,15 @@ export default function Nav() {
                 }}
             >Per
             </div>
+            <Spacer/>
+            <GoogleLoginButton
+                onSuccess={(response) => {
+                    console.log(response);
+                }}
+                onError={() => {
+                    console.log('login failed');
+                }}
+            />
         </div>
     )
 }
